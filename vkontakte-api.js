@@ -1,17 +1,11 @@
 
     var nodemailer  = require('nodemailer');
-
-    var transporter = nodemailer.createTransport({
-        service: 'Gmail',
-        auth: {
-          user: 'kovallit@gmail.com',
-          pass: 'oohibich'
-        }
-    });
+    var config      = require('config');
     
+    var transporter = nodemailer.createTransport(
+            config.get('smtp')
+        );
 
-  
-    
     var vk = {
         
         mailOptions: {
@@ -32,10 +26,9 @@
                 }
                 done();
             });
-        }
+        } 
         
-        
-    }
+    };
     
     module.exports = vk;
     

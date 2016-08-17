@@ -3,6 +3,7 @@
     var express     = require('express');
     var ui          = require('kue-ui');
     var cors        = require('cors');
+    var config      = require('config');
 
     var vk          = require('./vkontakte-api');
 
@@ -11,11 +12,11 @@
     var jobs = kue.createQueue();
     var user = 1;
 
-    kue.Job.rangeByState('complete', 0, 1000, 1, function(err, jobs) {
-      jobs.forEach(function(job) {
-        job.remove();  
-      });
-    });
+//    kue.Job.rangeByState('complete', 0, 1000, 1, function(err, jobs) {
+//      jobs.forEach(function(job) {
+//        job.remove();  
+//      });
+//    });
 
     var names = ["Ivan", "Aleksey", "Sergey", "Vasya", "Andrey"];
 
@@ -42,5 +43,4 @@
     app.use('/api', kue.app);
     app.use('/test', ui.app);
 
-    app.listen(3000);
-    console.log('UI started on port 3000');
+    app.listen(config.get('port'));
