@@ -10,7 +10,6 @@
       updated_at: Date
     });
 
-
     var notifications = mongoose.model('notifications', notificationsSchema);
-
+    
     module.exports = notifications;

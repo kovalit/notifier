@@ -3,6 +3,9 @@
     var bodyParser      = require('body-parser');
     var models          = require('./models');
     var notifications   = require('./models/notifications');
+   // var players         = require('./models/players');
+    
+    
     var worker          = require('./worker');
   //  var ui          = require('kue-ui');
   //  var cors        = require('cors');
@@ -11,6 +14,15 @@
     var routes      = require('./routes');
     var app         = express();
     
+
+    
+//    for (var i=0;i<1000;i++) {
+//        var num = i % 6;
+//        players.create({ vk_id: i, first_name: "player" + num }, function(error, doc) {
+//            if (error) throw error;
+//        });
+//    }
+
     // Restore notificarion
     notifications.findOne({ "name": 'vk' }, function (err, result) {
         if (err) throw err;

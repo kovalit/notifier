@@ -5,9 +5,8 @@
     var worker          = require('../worker');
     var chunk           = require('chunk');
     var async           = require('async');
-
-
- 
+    
+    
     var setStart = function(callback) {
         notifications.findOne({ "name": 'vk' }, function (err, result) {
             if (err) throw err;
@@ -29,29 +28,9 @@
                 });
             }  
         });
-
     };
     
-    
-    var setFinish = function() {
-        notifications.findOne({ "name": 'vk' }, function (err, result) {
-            if (err) throw err;
-            
-            if (!result) {
-               console.error('Notifications is not found');
-               return;
-            }
 
-            result.isFinish = true;
-            result.save(function (err, data) {
-                if (err) throw err;
-            });
-            
-        });
-
-    };
-    
-    
     var getPlayers = function(callback) {
         players.find({}, function (err, result) {
             if (err) throw err; 
@@ -69,7 +48,7 @@
     
     var fillNotifications = function(data, callback) {
 
-        worker.create(setFinish);
+        worker.create();
 
         var names = {};
         
@@ -86,8 +65,8 @@
         for (var key in names) {
             var idsCount = names[key].length;
 
-            if (idsCount > 2) {
-                var namesChunk = chunk(names[key]);
+            if (idsCount > 100) {
+                var namesChunk = chunk(names[key], 100);
                 for (var num in namesChunk) {
                     var namesList = namesChunk[num].join(',');
                     worker.add(namesList, key);

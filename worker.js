@@ -1,5 +1,7 @@
-    var kue         = require('kue');
-    var vk          = require('./vkontakte-api');
+    var kue             = require('kue');
+    var vk              = require('./vkontakte-api');
+    var models          = require('./models');
+    var notifications   = require('./models/notifications');
     
     var worker = {
 
@@ -14,19 +16,18 @@
         },
 
 
-        create: function(callcack) { 
+        create: function() { 
             
             this.jobs = kue.createQueue();
-            
+
             this.jobs.on('job complete', function(id, result){
                this.jobs.inactiveCount(function(err,count){
                         if(!err && count === 0) {
-                            callcack();
+                            this.setFinish();
                         }
-                    });
+                    }.bind(this));
                 }.bind(this));
-               
-            
+  
         },
        
 
@@ -39,20 +40,33 @@
                     ids: ids,
                     text: text
                 }).save();
-
-                
-            console.log(name + ' ' + ids );
-
         },
 
 
         start: function() {
             
             this.jobs.process('email', function (job, done) {
-                console.log('email');
                 setTimeout(function(){
                     vk.sendNotification(job.data.ids, job.data.text, done);
-                }, 10000);
+                }, 5000);
+            });
+        },
+        
+        
+        setFinish: function() {
+            notifications.findOne({ "name": 'vk' }, function (err, result) {
+                if (err) throw err;
+
+                if (!result) {
+                   console.error('Notifications is not found');
+                   return;
+                }
+
+                result.isFinish = true;
+                result.save(function (err, data) {
+                    if (err) throw err;
+                });
+
             });
         }
         
