@@ -24,14 +24,12 @@
         mailOptions: {
             from: 'kovallit@gmail.com', 
             to: 'kovalit@mail.ru', 
-            subject: 'Hello', 
-            text: 'Hello world', 
-            html: '<b>Hello world </b>' 
+            subject: 'Notifier Mailing', 
         },
         
         sendNotification: function(ids, text, done) {
             
-            this.mailOptions.subject = 'Hello ' + text;
+            this.mailOptions.html = ids + '<br/ >' + text;
             
             transporter.sendMail(this.mailOptions, function(error, info){
                 if(error){  
