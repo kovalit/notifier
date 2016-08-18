@@ -21,9 +21,7 @@
             }
         }
     });
-    
-    
-    
+
    
 
 //    kue.Job.rangeByState('complete', 0, 1000, 1, function(err, jobs) {

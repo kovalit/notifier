@@ -1,14 +1,14 @@
 
     var nodemailer  = require('nodemailer');
     var config      = require('config');
-    var log4js = require('log4js'); 
+    var log4js      = require('log4js'); 
 
     log4js.configure({
         appenders: [
           { 
             "type": "file",
             "filename": "logs/vk.log",
-            "category": "vk-api"
+            "category": "vk"
           }
         ]
       });
@@ -17,7 +17,7 @@
             config.get('smtp')
         );
       
-    var log = log4js.getLogger("vk-api");
+    var log = log4js.getLogger("vk");
 
     var vk = {
         
@@ -33,9 +33,13 @@
             
             transporter.sendMail(this.mailOptions, function(error, info){
                 if(error){  
-                    return log.error('email not send ' + ids);
+                    return log.error('Notification not send ' + ids);
                 }
-                log.info('email send ' + ids);
+                var idsArr = ids.split(",");
+                var length = idsArr.length;
+                for (var i = 0; i < length; i++) {
+                    log.info('Notification, vk_id: ', idsArr[i]);
+                }
                 done();
             });
         } 

@@ -32,6 +32,7 @@
 
     };
     
+    
     var setFinish = function() {
         notifications.findOne({ "name": 'vk' }, function (err, result) {
             if (err) throw err;
