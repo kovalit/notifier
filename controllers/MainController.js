@@ -8,7 +8,7 @@
 
 
  
-    var checkStart = function(callback) {
+    var setStart = function(callback) {
         notifications.findOne({ "name": 'vk' }, function (err, result) {
             if (err) throw err;
             
@@ -32,6 +32,24 @@
 
     };
     
+    var setFinish = function() {
+        notifications.findOne({ "name": 'vk' }, function (err, result) {
+            if (err) throw err;
+            
+            if (!result) {
+               console.error('Notifications is not found');
+               return;
+            }
+
+            result.isFinish = true;
+            result.save(function (err, data) {
+                if (err) throw err;
+            });
+            
+        });
+
+    };
+    
     
     var getPlayers = function(callback) {
         players.find({}, function (err, result) {
@@ -50,7 +68,7 @@
     
     var fillNotifications = function(data, callback) {
 
-        worker.create();
+        worker.create(setFinish);
 
         var names = {};
         
@@ -87,8 +105,8 @@
     }
     
             
-    exports.Set = function (req, res) {
-        res.render('set');
+    exports.Create = function (req, res) {
+        res.render('create');
     };      
     
     
@@ -103,7 +121,7 @@
         worker.template = req.body.template;
 
         async.waterfall([
-                checkStart,
+                setStart,
                 getPlayers,
                 fillNotifications 
             ], function (err) {

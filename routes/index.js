@@ -3,7 +3,7 @@
 
     module.exports = function(app){
         
-        app.get('/send', MainController.Set);
+        app.get('/send', MainController.Create);
         app.post('/send', MainController.Send);
         
     };

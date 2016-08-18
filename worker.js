@@ -14,15 +14,17 @@
         },
 
 
-        create: function() { 
+        create: function(callcack) { 
             
             this.jobs = kue.createQueue();
             
             this.jobs.on('job complete', function(id, result){
-               this.jobs.activeCount(function( err, total ) {
-                    console.log( total );
-            });
-            }.bind(this));
+               this.jobs.inactiveCount(function(err,count){
+                        if(!err && count === 0) {
+                            callcack();
+                        }
+                    });
+                }.bind(this));
                
             
         },
