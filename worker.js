@@ -18,7 +18,15 @@
             
             this.jobs = kue.createQueue();
             
+            this.jobs.on('job complete', function(id, result){
+               this.jobs.activeCount(function( err, total ) {
+                    console.log( total );
+            });
+            }.bind(this));
+               
+            
         },
+       
 
 
         add: function(ids, name) {
@@ -29,6 +37,8 @@
                     ids: ids,
                     text: text
                 }).save();
+
+                
             console.log(name + ' ' + ids );
 
         },
@@ -43,6 +53,7 @@
                 }, 10000);
             });
         }
+        
 
     };
         

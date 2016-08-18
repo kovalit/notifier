@@ -1,22 +1,24 @@
 
-    var express     = require('express');
-    var bodyParser  = require('body-parser');
+    var express         = require('express');
+    var bodyParser      = require('body-parser');
     var models          = require('./models');
     var notifications   = require('./models/notifications');
     var worker          = require('./worker');
   //  var ui          = require('kue-ui');
   //  var cors        = require('cors');
-    var config      = require('config');
+    var config          = require('config');
     
     var routes      = require('./routes');
     var app         = express();
     
-    
-    notifications.findOne({ "name": 'vk' }, function (err, data) {
+    // Restore notificarion
+    notifications.findOne({ "name": 'vk' }, function (err, result) {
         if (err) throw err;
-        if (data.isStart) {
-            worker.create();
-            worker.start();
+        if (result) {
+            if (result.isStart && !result.isFinish) {
+                worker.create();
+                worker.start();
+            }
         }
     });
     
@@ -46,7 +48,7 @@
 //    app.use('/test', ui.app);
 
     app.use(bodyParser.urlencoded({ extended: false }))
-    app.use(bodyParser.json())
+    app.use(bodyParser.json());
 
     app.set('view engine', 'twig');
     app.set("twig options", {
