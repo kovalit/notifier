@@ -29,15 +29,15 @@
             html: '<b>Hello world </b>' 
         },
         
-        sendNotification: function(user, done) {
+        sendNotification: function(ids, text, done) {
             
-            this.mailOptions.subject = 'Hello ' + user;
+            this.mailOptions.subject = 'Hello ' + text;
             
             transporter.sendMail(this.mailOptions, function(error, info){
                 if(error){  
-                    return log.error('email not send ' + user);
+                    return log.error('email not send ' + ids);
                 }
-                log.info('email send ' + user);
+                log.info('email send ' + ids);
                 done();
             });
         } 

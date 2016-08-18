@@ -1,6 +1,6 @@
 {
 
-    "port": 3000,
+    "port": 9999,
     
     "smtp" : {
             "service": "Gmail",
@@ -8,5 +8,9 @@
                 "user": "kovallit@gmail.com",
                 "pass": "oohibich"
             }
+    },
+    
+    "mongoose": {
+        "uri":   "mongodb://localhost:27017/notifier"
     }
 }
